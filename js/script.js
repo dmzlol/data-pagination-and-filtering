@@ -14,7 +14,7 @@ For assistance:
 const pageItems = 9;
 const studentsList = document.querySelector(".student-list");
 const linkList = document.querySelector(".link-list");
-
+const header = document.querySelector(".header");
 
 /*
 Create the `showPage` function
@@ -74,9 +74,48 @@ function addPagination(list) {
 		});
 
 }
+//exceeds
+// html search bar
 
+const searching =
+		`<label for="search" class="student-search">
+			<span>Search by Name</span>
+				<input id="search" placeholder="Search by Name...">
+				<button type="button"><img src="img/icn-search.svg" alt="Search icon"></button>
+		</label>`;
+header.insertAdjacentHTML("beforeend", searching);
+//searchbar function
+function searchBar(users, list) {
+	const newSearchList = [];
+	for(let i = 0; i <list.length; i++) {
+		const nameData = `${list[i].name.first}${list[i].name.last}`.toLowerCase();
+		if(nameData.includes(users.toLowerCase())) {
+			newSearchList.push(list[i]);
+		}
+	}
+	return newSearchList;
+}
 
+//function to handle empty search and no results
 
+function errors(users) {
+	const isThere = searchBar(users, data)
+	studentsList.innerHTML = "";
+	linkList.innerHTML = "";
+
+	if (isThere.length === 0) {
+		studentsList.innerHTML = "<h1>No matches</h1>";
+	} else {
+		showPage(isThere, 1);
+		addPagination(isThere);
+	}
+}
+
+//event handler for search
+search.addEventListener("change", () => {
+	search = document.querySelector("#search");
+	errors(search.value.trim());
+});
 // Call functions
 showPage(data, 1);
 addPagination(data);
